@@ -9,6 +9,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -35,14 +36,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      */
     @Override
     public void onMapReady(GoogleMap map) {
+
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(
                 new LatLng(41.889, -87.622), 16));
-
-        // You can customize the marker image using images bundled with
-        // your app, or dynamically generated bitmaps.
-        map.addMarker(new MarkerOptions()
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_room_white_24dp))
-                .anchor(0.0f, 1.0f) // Anchors the marker on the bottom left
-                .position(new LatLng(41.889, -87.622)));
+        
+        // Customise the styling of the base map using a JSON object defined
+        // in a raw resource file.
+        MapStyleOptions style = MapStyleOptions.loadRawResourceStyle(
+                this, R.raw.style_json);
+        map.setMapStyle(style);
     }
 }
