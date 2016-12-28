@@ -8,6 +8,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -37,13 +38,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap map) {
 
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                new LatLng(41.889, -87.622), 16));
-        
-        // Customise the styling of the base map using a JSON object defined
-        // in a raw resource file.
-        MapStyleOptions style = MapStyleOptions.loadRawResourceStyle(
-                this, R.raw.style_json);
-        map.setMapStyle(style);
+        LatLng mapCenter = new LatLng(41.889, -87.622);
+
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(mapCenter, 13));
+
+        // Flat markers will rotate when the map is rotated,
+        // and change perspective when the map is tilted.
+        map.addMarker(new MarkerOptions()
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_room_white_24dp))
+                .position(mapCenter)
+                .flat(true)
+                .rotation(245));
+
+        CameraPosition cameraPosition = CameraPosition.builder()
+                .target(mapCenter)
+                .zoom(13)
+                .bearing(90)
+                .build();
+
+        // Animate the change in camera view over 2 seconds
+        map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition),
+                2000, null);
     }
 }
